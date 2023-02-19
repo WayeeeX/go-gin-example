@@ -14,10 +14,15 @@ import (
 var db *gorm.DB
 
 type Model struct {
-	ID         int `gorm:"primary_key" json:"id"`
-	CreatedOn  int `json:"created_on"`
-	ModifiedOn int `json:"modified_on"`
-	DeletedOn  int `json:"deleted_on"`
+	ID         uint       `gorm:"primary_key" json:"id"`
+	CreateTime *LocalTime `gorm:"autoCreateTime" json:"create_time"`
+	UpdateTime *LocalTime `gorm:"autoUpdateTime" json:"update_time"`
+}
+type LocalTime time.Time
+
+func (t *LocalTime) MarshalJSON() ([]byte, error) {
+	tTime := time.Time(*t)
+	return []byte(fmt.Sprintf("\"%v\"", tTime.Format("2006-01-02 15:04:05"))), nil
 }
 
 // Setup initializes the database instance

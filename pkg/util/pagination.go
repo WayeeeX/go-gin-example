@@ -1,19 +1,28 @@
 package util
 
 import (
-	"github.com/unknwon/com"
-	"github.com/gin-gonic/gin"
-
 	"github.com/EDDYCJY/go-gin-example/pkg/setting"
+	"github.com/gin-gonic/gin"
+	"github.com/unknwon/com"
 )
 
-// GetPage get page parameters
-func GetPage(c *gin.Context) int {
-	result := 0
-	page := com.StrTo(c.Query("page")).MustInt()
-	if page > 0 {
-		result = (page - 1) * setting.AppSetting.PageSize
-	}
+type Page struct {
+	PageNum  int `json:"pageNum"`
+	PageSize int `json:"pageSize"`
+}
 
-	return result
+// GetPage get page parameters
+func GetPage(c *gin.Context) (page Page) {
+	pageNum := com.StrTo(c.Query("pageNum")).MustInt()
+	pageSize := com.StrTo(c.Query("pageSize")).MustInt()
+	if pageNum == 0 {
+		page.PageNum = 1
+	}
+	if pageSize == 0 {
+		page.PageSize = setting.AppSetting.PageSize
+	}
+	return page
+}
+func GetOffset(page Page) (offset int) {
+	return (page.PageNum - 1) * page.PageSize
 }

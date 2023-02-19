@@ -9,25 +9,19 @@ import (
 var jwtSecret []byte
 
 type Claims struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	UserID uint `json:"id"`
+	Role   int  `json:"role"`
 	jwt.StandardClaims
 }
 
 // GenerateToken generate tokens used for auth
-func GenerateToken(username, password string) (string, error) {
+func GenerateToken(claims Claims) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(3 * time.Hour)
-
-	claims := Claims{
-		EncodeMD5(username),
-		EncodeMD5(password),
-		jwt.StandardClaims{
-			ExpiresAt: expireTime.Unix(),
-			Issuer:    "gin-blog",
-		},
+	claims.StandardClaims = jwt.StandardClaims{
+		ExpiresAt: expireTime.Unix(),
+		Issuer:    "music-admin",
 	}
-
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := tokenClaims.SignedString(jwtSecret)
 
