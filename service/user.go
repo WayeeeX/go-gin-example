@@ -1,11 +1,11 @@
 package service
 
 import (
-	"github.com/EDDYCJY/go-gin-example/models"
-	"github.com/EDDYCJY/go-gin-example/models/response"
-	"github.com/EDDYCJY/go-gin-example/pkg/e"
-	"github.com/EDDYCJY/go-gin-example/pkg/util"
-	"github.com/gin-gonic/gin"
+	"github.com/WayeeeX/go-gin-example/models"
+	"github.com/WayeeeX/go-gin-example/models/request"
+	"github.com/WayeeeX/go-gin-example/models/response"
+	"github.com/WayeeeX/go-gin-example/pkg/e"
+	"github.com/WayeeeX/go-gin-example/pkg/util"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -19,7 +19,7 @@ func (u *UserService) AdminLogin(username string, password string, ip string) (r
 		return resLogin, e.ERROR_USER_NOT_EXIST
 	}
 	//验证密码
-	if !ComparePwd(user.Password, password) || user.Role == 0 {
+	if !ComparePwd(user.Password, password) || *user.Role == 0 {
 		return resLogin, e.ERROR_AUTH_PARAMS
 	}
 	//登录成功 生成登录记录
@@ -90,9 +90,14 @@ func (u *UserService) CheckUserExistByNickname(nickname string) bool {
 func (u *UserService) GetUserDetailByID(userID uint) (user models.User) {
 	return userModel.GetByID(userID)
 }
-func (u *UserService) GetUserList(c *gin.Context) (code int) {
-
-	return e.SUCCESS
+func (u *UserService) GetUserList(req request.PageQuery) (users []models.User, total int) {
+	return userModel.GetList(req)
+}
+func (u *UserService) DeleteUsers(req request.IdsJson) (code int) {
+	return userModel.Delete(req)
+}
+func (u *UserService) UpdateUserStatus(req request.UpdateStatus) (code int) {
+	return userModel.UpdateStatus(req)
 }
 
 // GetPwd 给密码加密

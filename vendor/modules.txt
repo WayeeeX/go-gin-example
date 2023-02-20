@@ -71,6 +71,11 @@ github.com/goccy/go-json/internal/runtime
 ## explicit
 github.com/gomodule/redigo/internal
 github.com/gomodule/redigo/redis
+# github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e
+## explicit
+# github.com/jinzhu/copier v0.3.5
+## explicit; go 1.13
+github.com/jinzhu/copier
 # github.com/jinzhu/gorm v0.0.0-20180213101209-6e1387b44c64
 ## explicit
 github.com/jinzhu/gorm
@@ -114,6 +119,8 @@ github.com/pelletier/go-toml/v2/unstable
 # github.com/pkg/errors v0.8.1
 ## explicit
 github.com/pkg/errors
+# github.com/smartystreets/assertions v0.0.0-20190116191733-b6c0e53d7304
+## explicit
 # github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337
 ## explicit
 # github.com/swaggo/gin-swagger v1.2.0
@@ -126,9 +133,6 @@ github.com/swaggo/swag
 # github.com/ugorji/go/codec v1.2.9
 ## explicit; go 1.11
 github.com/ugorji/go/codec
-# github.com/unknwon/com v1.0.1
-## explicit
-github.com/unknwon/com
 # golang.org/x/crypto v0.6.0
 ## explicit; go 1.17
 golang.org/x/crypto/bcrypt

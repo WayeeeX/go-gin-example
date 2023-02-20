@@ -1,7 +1,7 @@
 package response
 
 import (
-	"github.com/EDDYCJY/go-gin-example/models"
+	"github.com/WayeeeX/go-gin-example/models"
 )
 
 type AdminLogin struct {
@@ -9,13 +9,13 @@ type AdminLogin struct {
 	Token string `json:"token"`
 }
 type UserInfo struct {
-	ID       uint   `json:"id"`
+	ID       uint64 `json:"id"`
 	Username string `json:"username"`
 	Nickname string `json:"nickname"`
 	Phone    string `json:"phone"`
 	Avatar   string `json:"avatar"`
-	Status   int    `json:"status"`
-	Role     int    `json:"role"`
+	Status   *int   `json:"status"`
+	Role     *int   `json:"role"`
 }
 
 type Login struct {

@@ -1,27 +1,37 @@
 package admin
 
 import (
-	"github.com/EDDYCJY/go-gin-example/models/request"
-	"github.com/EDDYCJY/go-gin-example/pkg/app"
-	"github.com/EDDYCJY/go-gin-example/pkg/e"
-	"github.com/EDDYCJY/go-gin-example/pkg/util"
+	"github.com/WayeeeX/go-gin-example/models/request"
+	"github.com/WayeeeX/go-gin-example/pkg/app"
+	"github.com/WayeeeX/go-gin-example/pkg/e"
+	"github.com/WayeeeX/go-gin-example/pkg/util"
 	"github.com/gin-gonic/gin"
 )
 
 func AdminLogin(c *gin.Context) {
 	appG := app.GetGin(c)
-	var json request.Login
-	if err := c.ShouldBindJSON(&json); err != nil {
-		appG.Response(e.INVALID_PARAMS, nil)
-		return
-	}
+	json := app.BindJson[request.Login](c)
 	data, code := userService.AdminLogin(json.Username, json.Password, util.IP.GetIpAddress(c))
 	appG.Response(code, data)
 }
 
 func GetUserList(c *gin.Context) {
 	appG := app.GetGin(c)
-	appG.Response(userService.GetUserList(c), nil)
+	users, total := userService.GetUserList(app.BindValidQuery[request.PageQuery](c))
+	appG.Response(e.SUCCESS, gin.H{
+		"users": users,
+		"total": total,
+	})
+	return
+}
+func DeleteUsers(c *gin.Context) {
+	appG := app.GetGin(c)
+	appG.Response(userService.DeleteUsers(app.BindJson[request.IdsJson](c)), nil)
+	return
+}
+func UpdateUserStatus(c *gin.Context) {
+	appG := app.GetGin(c)
+	appG.Response(userService.UpdateUserStatus(app.BindJson[request.UpdateStatus](c)), nil)
 	return
 }
 func CheckExistUsername(c *gin.Context) {

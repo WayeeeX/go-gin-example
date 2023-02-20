@@ -9,8 +9,8 @@ import (
 var jwtSecret []byte
 
 type Claims struct {
-	UserID uint `json:"id"`
-	Role   int  `json:"role"`
+	UserID uint64 `json:"id"`
+	Role   *int   `json:"role"`
 	jwt.StandardClaims
 }
 

@@ -1,29 +1,20 @@
 package app
 
 import (
-	"github.com/astaxie/beego/validation"
+	"github.com/WayeeeX/go-gin-example/pkg/e"
 	"github.com/gin-gonic/gin"
-	"net/http"
-
-	"github.com/EDDYCJY/go-gin-example/pkg/e"
 )
 
-// BindAndValid binds and validates data
-func BindAndValid(c *gin.Context, form interface{}) (int, int) {
-	err := c.Bind(form)
-	if err != nil {
-		return http.StatusBadRequest, e.INVALID_PARAMS
+func BindJson[T any](c *gin.Context) (data T) {
+	if err := c.ShouldBindJSON(&data); err != nil {
+		panic(e.INVALID_PARAMS)
 	}
-
-	valid := validation.Validation{}
-	check, err := valid.Valid(form)
-	if err != nil {
-		return http.StatusInternalServerError, e.ERROR
+	return
+}
+func BindValidQuery[T any](c *gin.Context) (data T) {
+	// Query 绑定
+	if err := c.ShouldBindQuery(&data); err != nil {
+		panic(e.INVALID_PARAMS)
 	}
-	if !check {
-		MarkErrors(valid.Errors)
-		return http.StatusBadRequest, e.INVALID_PARAMS
-	}
-
-	return http.StatusOK, e.SUCCESS
+	return data
 }

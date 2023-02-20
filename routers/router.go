@@ -2,9 +2,9 @@ package routers
 
 import (
 	"fmt"
-	"github.com/EDDYCJY/go-gin-example/middleware"
-	"github.com/EDDYCJY/go-gin-example/pkg/setting"
-	"github.com/EDDYCJY/go-gin-example/pkg/upload"
+	"github.com/WayeeeX/go-gin-example/middleware"
+	"github.com/WayeeeX/go-gin-example/pkg/setting"
+	"github.com/WayeeeX/go-gin-example/pkg/upload"
 	"github.com/gin-gonic/gin"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"

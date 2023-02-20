@@ -1,10 +1,10 @@
 package admin
 
 import (
-	"github.com/EDDYCJY/go-gin-example/models"
-	"github.com/EDDYCJY/go-gin-example/models/request"
-	"github.com/EDDYCJY/go-gin-example/pkg/app"
-	"github.com/EDDYCJY/go-gin-example/pkg/e"
+	"github.com/WayeeeX/go-gin-example/models"
+	"github.com/WayeeeX/go-gin-example/models/request"
+	"github.com/WayeeeX/go-gin-example/pkg/app"
+	"github.com/WayeeeX/go-gin-example/pkg/e"
 	"github.com/gin-gonic/gin"
 )
 

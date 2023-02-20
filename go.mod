@@ -1,4 +1,4 @@
-module github.com/EDDYCJY/go-gin-example
+module github.com/WayeeeX/go-gin-example
 
 go 1.18
 
@@ -9,10 +9,10 @@ require (
 	github.com/gin-gonic/gin v1.8.2
 	github.com/go-ini/ini v1.32.1-0.20180214101753-32e4be5f41bb
 	github.com/gomodule/redigo v2.0.1-0.20180401191855-9352ab68be13+incompatible
+	github.com/jinzhu/copier v0.3.5
 	github.com/jinzhu/gorm v0.0.0-20180213101209-6e1387b44c64
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.5.1
-	github.com/unknwon/com v1.0.1
 	golang.org/x/crypto v0.6.0
 )
 
@@ -31,6 +31,7 @@ require (
 	github.com/go-playground/validator/v10 v10.11.2 // indirect
 	github.com/go-sql-driver/mysql v1.4.1-0.20190510102335-877a9775f068 // indirect
 	github.com/goccy/go-json v0.10.0 // indirect
+	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
 	github.com/jinzhu/inflection v0.0.0-20170102125226-1c35d901db3d // indirect
 	github.com/jinzhu/now v1.0.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -43,6 +44,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
+	github.com/smartystreets/assertions v0.0.0-20190116191733-b6c0e53d7304 // indirect
 	github.com/smartystreets/goconvey v0.0.0-20190731233626-505e41936337 // indirect
 	github.com/ugorji/go/codec v1.2.9 // indirect
 	golang.org/x/net v0.7.0 // indirect

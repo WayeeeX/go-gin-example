@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"github.com/EDDYCJY/go-gin-example/middleware"
-	v1 "github.com/EDDYCJY/go-gin-example/routers/admin"
+	"github.com/WayeeeX/go-gin-example/middleware"
+	v1 "github.com/WayeeeX/go-gin-example/routers/admin"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,18 +25,18 @@ func InitAdminRouter(r *gin.Engine) *gin.Engine {
 	user := admin.Group("/user")
 	{
 		user.GET("/list", v1.GetUserList)
-		user.POST("/delete")
-		user.POST("/update")
-		user.POST("/updateStatus")
+		user.POST("/delete", v1.DeleteUsers)
+		user.POST("/updateStatus", v1.UpdateUserStatus)
 	}
 
 	song := admin.Group("/song")
 	{
-		song.GET("/list")
-		song.GET("/detail")
-		song.POST("/update")
-		song.POST("/updateStatus")
-		song.POST("/delete")
+		song.GET("/list", v1.GetSongList)
+		song.GET("/detail", v1.GetSongDetail)
+		song.POST("/create", v1.CreateSong)
+		song.POST("/update", v1.UpdateSong)
+		song.POST("/updateStatus", v1.UpdateSongStatus)
+		song.POST("/delete", v1.DeleteSongs)
 	}
 
 	album := admin.Group("/album")

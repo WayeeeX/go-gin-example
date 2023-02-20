@@ -6,8 +6,8 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 
-	"github.com/EDDYCJY/go-gin-example/pkg/e"
-	"github.com/EDDYCJY/go-gin-example/pkg/util"
+	"github.com/WayeeeX/go-gin-example/pkg/e"
+	"github.com/WayeeeX/go-gin-example/pkg/util"
 )
 
 // JWT is jwt middleware
@@ -29,7 +29,7 @@ func AuthJWT(needAdmin bool) gin.HandlerFunc {
 				default:
 					code = e.ERROR_AUTH_CHECK_TOKEN_FAIL
 				}
-			} else if claims.Role == 0 && needAdmin {
+			} else if *claims.Role == 0 && needAdmin {
 				code = e.ERROR_AUTH_CHECK_TOKEN_FAIL
 			} else {
 				c.Set("userID", claims.UserID)

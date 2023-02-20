@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"github.com/EDDYCJY/go-gin-example/routers/frontend"
+	"github.com/WayeeeX/go-gin-example/routers/frontend"
 	"github.com/gin-gonic/gin"
 )
 

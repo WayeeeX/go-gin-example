@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 
-	"github.com/EDDYCJY/go-gin-example/pkg/e"
+	"github.com/WayeeeX/go-gin-example/pkg/e"
 )
 
 type Gin struct {
@@ -28,6 +28,9 @@ func (g *Gin) Response(errCode int, data interface{}) {
 		Data: data,
 	})
 	return
+}
+func (g *Gin) OK() {
+	g.Response(e.SUCCESS, nil)
 }
 func (g *Gin) FailMessage(message string) {
 	g.C.JSON(http.StatusOK, Response{

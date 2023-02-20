@@ -3,8 +3,8 @@ package models
 import "time"
 
 type LoginRecord struct {
-	ID          uint `gorm:"primaryKey"`
-	UserID      uint
+	ID          uint64 `gorm:"primaryKey"`
+	UserID      uint64
 	LastLoginIP string
 	LoginTime   *time.Time `gorm:"autoCreateTime"`
 }
