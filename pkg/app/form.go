@@ -7,7 +7,7 @@ import (
 
 func BindJson[T any](c *gin.Context) (data T) {
 	if err := c.ShouldBindJSON(&data); err != nil {
-		panic(e.INVALID_PARAMS)
+		panic(err.Error())
 	}
 	return
 }

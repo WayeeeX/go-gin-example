@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql/driver"
 	"errors"
 	"fmt"
 	"github.com/WayeeeX/go-gin-example/models/request"
@@ -23,9 +24,52 @@ type Model struct {
 }
 type LocalTime time.Time
 
-func (t *LocalTime) MarshalJSON() ([]byte, error) {
-	tTime := time.Time(*t)
-	return []byte(fmt.Sprintf("\"%v\"", tTime.Format("2006-01-02 15:04:05"))), nil
+const (
+	timeFormart = "2006-01-02 15:04:05"
+	zone        = "Asia/Shanghai"
+)
+
+func (t *LocalTime) UnmarshalJSON(data []byte) (err error) {
+	now, err := time.ParseInLocation(`"`+timeFormart+`"`, string(data), time.Local)
+	*t = LocalTime(now)
+	return
+}
+
+// MarshalJSON implements json marshal interface.
+func (t LocalTime) MarshalJSON() ([]byte, error) {
+	b := make([]byte, 0, len(timeFormart)+2)
+	b = append(b, '"')
+	b = time.Time(t).AppendFormat(b, timeFormart)
+	b = append(b, '"')
+	return b, nil
+}
+func (t LocalTime) String() string {
+	return time.Time(t).Format(timeFormart)
+}
+
+func (t LocalTime) local() time.Time {
+	loc, _ := time.LoadLocation(zone)
+	return time.Time(t).In(loc)
+}
+
+// Value ...
+func (t LocalTime) Value() (driver.Value, error) {
+	var zeroTime time.Time
+	var ti = time.Time(t)
+	if ti.UnixNano() == zeroTime.UnixNano() {
+		return nil, nil
+	}
+	return ti, nil
+}
+
+// Scan valueof time.Time 注意是指针类型 method
+func (t *LocalTime) Scan(v interface{}) error {
+	value, ok := v.(time.Time)
+	if ok {
+		*t = LocalTime(value)
+		return nil
+	}
+	return fmt.Errorf("can not convert %v to timestamp", v)
 }
 
 // Setup initializes the database instance
@@ -171,9 +215,9 @@ func Updates[T any](data *T, query string, args ...any) {
 }
 
 // 数据列表
-func List[T any](data T, req request.PageQuery) (T, int64) {
+func List[T any](data T, req request.PageQuery, query string, args ...any) (T, int64) {
 	var total int64
-	db.Model(&data).Count(&total).Limit(req.PageSize).Offset(util.GetOffset(req)).
+	db.Model(&data).Count(&total).Where(query, args).Limit(req.PageSize).Offset(util.GetOffset(req)).
 		Find(&data)
 	return data, total
 }

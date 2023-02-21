@@ -7,7 +7,6 @@ import (
 )
 
 func InitAdminRouter(r *gin.Engine) *gin.Engine {
-
 	//无需鉴权路由
 	r.POST("/admin/login", v1.AdminLogin)
 
@@ -41,8 +40,9 @@ func InitAdminRouter(r *gin.Engine) *gin.Engine {
 
 	album := admin.Group("/album")
 	{
-		album.GET("/list")
+		album.GET("/list", v1.GetAlbumList)
 		album.GET("/detail")
+		album.POST("/create", v1.CreateAlbum)
 		album.POST("/update")
 		album.POST("/updateStatus")
 		album.POST("/delete")

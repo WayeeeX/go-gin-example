@@ -11,7 +11,8 @@ import (
 
 func GetSongList(c *gin.Context) {
 	appG := app.GetGin(c)
-	songs, total := models.List([]models.Song{}, app.BindValidQuery[request.PageQuery](c))
+	req := app.BindValidQuery[request.PageQuery](c)
+	songs, total := models.List([]models.Song{}, req, "concat(name,lyric) like ?", "%"+req.Keyword+"%")
 	appG.Response(e.SUCCESS, gin.H{
 		"songs": songs,
 		"total": total,

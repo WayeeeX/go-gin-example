@@ -18,6 +18,9 @@ github.com/astaxie/beego/validation
 github.com/dgrijalva/jwt-go
 # github.com/erikstmartin/go-testdb v0.0.0-20160219214506-8d10e4a1bae5
 ## explicit
+# github.com/gin-contrib/cors v1.4.0
+## explicit; go 1.13
+github.com/gin-contrib/cors
 # github.com/gin-contrib/sse v0.1.0
 ## explicit; go 1.12
 github.com/gin-contrib/sse
