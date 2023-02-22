@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"github.com/WayeeeX/go-gin-example/models/common"
 	"github.com/WayeeeX/go-gin-example/models/request"
 	"github.com/WayeeeX/go-gin-example/pkg/e"
 	"github.com/WayeeeX/go-gin-example/pkg/util"
@@ -9,16 +10,16 @@ import (
 )
 
 type User struct {
-	Model
-	Username      string     `gorm:"unique,autoIncrement" json:"username"`
-	Password      string     `json:"-"`
-	Nickname      string     `json:"nickname"`
-	Phone         string     `json:"phone"`
-	Avatar        string     `json:"avatar"`
-	Status        *int       `gorm:"default:1" json:"status"`
-	Role          *int       `json:"role"`
-	LastLoginTime *LocalTime `gorm:"autoUpdateTime" json:"last_login_time"`
-	LastLoginIP   string     `json:"last_login_ip"`
+	common.Model
+	Username      string            `gorm:"unique,autoIncrement" json:"username"`
+	Password      string            `json:"-"`
+	Nickname      string            `json:"nickname"`
+	Phone         string            `json:"phone"`
+	Avatar        string            `json:"avatar"`
+	Status        *int              `gorm:"default:1" json:"status"`
+	Role          *int              `json:"role"`
+	LastLoginTime *common.LocalTime `gorm:"autoUpdateTime" json:"last_login_time"`
+	LastLoginIP   string            `json:"last_login_ip"`
 }
 
 // GetUserByName 根据用户名查询用户

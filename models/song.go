@@ -1,12 +1,14 @@
 package models
 
 import (
+	"github.com/WayeeeX/go-gin-example/models/common"
 	"github.com/WayeeeX/go-gin-example/models/request"
+	"github.com/WayeeeX/go-gin-example/models/response"
 	"github.com/WayeeeX/go-gin-example/pkg/util"
 )
 
 type Song struct {
-	Model
+	common.Model
 	ArtistID   uint64 `json:"artist_id"`
 	AlbumID    uint64 `json:"album_id"`
 	Name       string `json:"name"`
@@ -39,8 +41,7 @@ func (s Song) GetOne(song Song) Song {
 	//TODO implement me
 	panic("implement me")
 }
-func (s Song) GetList(req request.PageQuery) (songs []Song, total int) {
-	db.Table("tb_song").Count(&total).Limit(req.PageSize).Offset(util.GetOffset(req)).
-		Find(&songs)
-	return songs, total
+func (s Song) GetList(req request.PageQuery) (res response.SongList) {
+	db.Table("tb_song s").Select("s.*,al.name album_name ,ar.name artist_name").Joins("left join tb_album al on s.album_id = al.id left join tb_artist ar on s.artist_id = ar.id").Count(&res.Total).Where("s.name like ? or ar.name like ? or al.name like ?", "%"+req.Keyword+"%", "%"+req.Keyword+"%", "%"+req.Keyword+"%").Limit(req.PageSize).Offset(util.GetOffset(req)).Scan(&res.Songs)
+	return
 }

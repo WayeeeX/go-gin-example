@@ -32,7 +32,7 @@ func (u *UserService) AdminLogin(username string, password string, ip string) (r
 	if err != nil {
 		return resLogin, e.ERROR_AUTH_TOKEN
 	}
-	resLogin.User = user
+	resLogin = util.CopyProperties[response.AdminLogin](user)
 	resLogin.Token = token
 	return resLogin, e.SUCCESS
 }

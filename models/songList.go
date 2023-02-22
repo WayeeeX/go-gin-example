@@ -1,7 +1,9 @@
 package models
 
+import "github.com/WayeeeX/go-gin-example/models/common"
+
 type SongList struct {
-	Model
+	common.Model
 	UserID       uint   `json:"user_id"`
 	Name         string `json:"name"`
 	Pic          string `json:"pic"`

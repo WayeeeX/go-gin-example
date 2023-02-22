@@ -32,10 +32,10 @@ func InitRouters() {
 
 func GetRouters() *gin.Engine {
 	r := gin.New()
+	r.Use(cors.Default())
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 	r.Use(middleware.ErrorRecovery())
-	r.Use(cors.Default())
 	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

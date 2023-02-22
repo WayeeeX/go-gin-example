@@ -9,14 +9,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type result struct {
+	Songs      models.Song
+	AlbumName  string
+	AlbumPic   string
+	ArtistName string
+	ArtistPic  string
+}
+
 func GetSongList(c *gin.Context) {
-	appG := app.GetGin(c)
 	req := app.BindValidQuery[request.PageQuery](c)
-	songs, total := models.List([]models.Song{}, req, "concat(name,lyric) like ?", "%"+req.Keyword+"%")
-	appG.Response(e.SUCCESS, gin.H{
-		"songs": songs,
-		"total": total,
-	})
+	util.Response(c, e.SUCCESS, songService.GetSongList(req))
 	return
 }
 func CreateSong(c *gin.Context) {
