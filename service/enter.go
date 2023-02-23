@@ -7,4 +7,6 @@ var (
 	loginRecordModel models.LoginRecord
 	songListModel    models.SongList
 	songModel        models.Song
+	albumModel       models.Album
+	artistModel      models.Artist
 )

@@ -19,6 +19,7 @@ func InitAdminRouter(r *gin.Engine) *gin.Engine {
 		artist.GET("/list")
 		artist.POST("/update")
 		artist.POST("/delete")
+		artist.GET("/selectList", v1.GetArtistSelectList)
 	}
 
 	user := admin.Group("/user")
@@ -46,6 +47,7 @@ func InitAdminRouter(r *gin.Engine) *gin.Engine {
 		album.POST("/update")
 		album.POST("/updateStatus")
 		album.POST("/delete")
+		album.GET("/selectList", v1.GetAlbumSelectList)
 	}
 
 	songList := admin.Group("/songlist")

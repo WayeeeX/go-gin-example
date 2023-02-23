@@ -26,3 +26,9 @@ func GetAlbumList(c *gin.Context) {
 	})
 	return
 }
+
+func GetAlbumSelectList(c *gin.Context) {
+	req := app.BindValidQuery[request.PageQuery](c)
+	util.Response(c, e.SUCCESS, albumService.GetSelectList(req))
+	return
+}
