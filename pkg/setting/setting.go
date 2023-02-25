@@ -18,8 +18,11 @@ type App struct {
 	ImageMaxSize   int
 	ImageAllowExts []string
 
+	LyricSavePath  string
+	LyricMaxSize   int
+	LyricAllowExts []string
+
 	ExportSavePath string
-	QrCodeSavePath string
 	FontSavePath   string
 
 	LogSavePath string
@@ -76,6 +79,7 @@ func Setup() {
 	mapTo("redis", RedisSetting)
 
 	AppSetting.ImageMaxSize = AppSetting.ImageMaxSize * 1024 * 1024
+	AppSetting.LyricMaxSize = AppSetting.LyricMaxSize * 1024 * 1024
 	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
 	ServerSetting.WriteTimeout = ServerSetting.WriteTimeout * time.Second
 	RedisSetting.IdleTimeout = RedisSetting.IdleTimeout * time.Second

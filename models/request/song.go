@@ -9,7 +9,7 @@ type CreateSong struct {
 	IsOriginal *int   `json:"is_original" binding:"required,oneof=1 0"`
 	Pic        string `json:"pic" binding:"required"`
 	Duration   int    `json:"duration" binding:"required,number"`
-	Lyric      string `json:"lyric"`
+	Lyric      string `json:"lyrics"`
 }
 
 type UpdateSong struct {
@@ -22,5 +22,5 @@ type UpdateSong struct {
 	IsOriginal *int   `json:"is_original" binding:"oneof=1 0"`
 	Pic        string `json:"pic" binding:""`
 	Duration   int    `json:"duration" binding:"number"`
-	Lyric      string `json:"lyric"`
+	Lyric      string `json:"lyrics"`
 }

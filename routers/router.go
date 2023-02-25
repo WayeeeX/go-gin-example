@@ -7,8 +7,6 @@ import (
 	"github.com/WayeeeX/go-gin-example/pkg/upload"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 	"net/http"
 )
 
@@ -37,8 +35,10 @@ func GetRouters() *gin.Engine {
 	r.Use(gin.Recovery())
 	r.Use(middleware.ErrorRecovery())
 	r.StaticFS("/upload/images", http.Dir(upload.GetImageFullPath()))
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
+	r.StaticFS("/upload/lyrics", http.Dir(upload.GetLyricFullPath()))
+	//r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r.POST("/system/uploadImage", middleware.AuthJWT(false), UploadImage)
+	r.POST("/system/uploadLyric", middleware.AuthJWT(false), UploadLyric)
 	InitAdminRouter(r)
 	InitFrontendRouter(r)
 	return r

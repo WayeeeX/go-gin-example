@@ -14,7 +14,7 @@ type songListSong struct {
 	IsOriginal *int   `json:"is_original"`
 	Pic        string `json:"pic"`
 	Duration   int    `json:"duration"`
-	Lyric      string `json:"lyric"`
+	Lyric      string `json:"lyrics"`
 	AlbumID    uint64 `json:"album_id"`
 	AlbumName  string `json:"album_name"`
 	ArtistID   uint64 `json:"artist_id"`

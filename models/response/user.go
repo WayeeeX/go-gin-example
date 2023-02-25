@@ -1,10 +1,6 @@
 package response
 
-import (
-	"github.com/WayeeeX/go-gin-example/models/common"
-)
-
-type AdminLogin struct {
+/*type AdminLogin struct {
 	common.Model
 	Username      string            `json:"username"`
 	Nickname      string            `json:"nickname"`
@@ -15,6 +11,10 @@ type AdminLogin struct {
 	LastLoginTime *common.LocalTime `json:"last_login_time"`
 	LastLoginIP   string            `json:"last_login_ip"`
 	Token         string            `json:"token"`
+}*/
+type AdminLogin struct {
+	User  UserInfo `json:"user"`
+	Token string   `json:"token"`
 }
 type UserInfo struct {
 	ID       uint64 `json:"id"`
