@@ -25,6 +25,7 @@ func InitAdminRouter(r *gin.Engine) *gin.Engine {
 	user := admin.Group("/user")
 	{
 		user.GET("/list", v1.GetUserList)
+		user.GET("/my/detail", v1.GetMyDetail)
 		user.POST("/delete", v1.DeleteUsers)
 		user.POST("/updateStatus", v1.UpdateUserStatus)
 	}
@@ -65,9 +66,9 @@ func InitAdminRouter(r *gin.Engine) *gin.Engine {
 		}
 	}
 
-	loginRecord := admin.Group("/record/login")
+	loginRecord := admin.Group("/log/login")
 	{
-		loginRecord.GET("/list")
+		loginRecord.GET("/list", v1.GetLoginLogList)
 	}
 
 	return r

@@ -23,15 +23,15 @@ func GetSongList(c *gin.Context) {
 	return
 }
 func CreateSong(c *gin.Context) {
-	appG := app.GetGin(c)
 	song := util.CopyProperties[models.Song](app.BindJson[request.CreateSong](c))
 	models.Create(&song)
-	appG.OK()
+	util.OK(c)
 	return
 }
 func GetSongDetail(c *gin.Context) {
-	song := models.GetOne(models.Song{}, "id = ?", app.BindValidQuery[request.IdQuery](c).Id)
-	util.Response(c, e.SUCCESS, song)
+	util.Response(c, e.SUCCESS, gin.H{
+		"song": songService.GetSongDetail(app.BindValidQuery[request.IdQuery](c).Id),
+	})
 	return
 }
 func UpdateSong(c *gin.Context) {

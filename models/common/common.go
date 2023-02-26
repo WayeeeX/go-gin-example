@@ -3,12 +3,13 @@ package common
 import (
 	"database/sql/driver"
 	"fmt"
+	"strconv"
 	"time"
 )
 
 type Model struct {
 	ID         uint64     `gorm:"primary_key" json:"id"`
-	CreateTime *LocalTime `gorm:"autoCreateTime" json:"create_time"`
+	CreateTime *LocalTime `gorm:"autoCreateTime,<-:create" json:"create_time"`
 	UpdateTime *LocalTime `gorm:"autoUpdateTime" json:"update_time"`
 }
 type LocalTime time.Time
@@ -19,9 +20,13 @@ const (
 )
 
 func (t *LocalTime) UnmarshalJSON(data []byte) (err error) {
-	now, err := time.ParseInLocation(`"`+timeFormart+`"`, string(data), time.Local)
-	*t = LocalTime(now)
-	return
+	if string(data) == "null" {
+		return nil
+	}
+	millis, err := strconv.ParseInt(string(data), 10, 64)
+
+	*t = LocalTime(time.Unix(0, millis*int64(time.Millisecond)))
+	return err
 }
 
 // MarshalJSON implements json marshal interface.

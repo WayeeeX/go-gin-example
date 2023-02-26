@@ -15,7 +15,6 @@ func AuthJWT(needAdmin bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var code int
 		var data interface{}
-
 		code = e.SUCCESS
 		token := c.Request.Header.Get("music-access-token")
 		if token == "" {

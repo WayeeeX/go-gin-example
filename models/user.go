@@ -39,7 +39,7 @@ func (u *User) GetByNickname(nickname string) (user User) {
 	return user
 }
 
-func (u *User) GetByID(userID uint) (user User) {
+func (u *User) GetByID(userID uint64) (user User) {
 	err := db.First(&user, userID).Error
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) { // 记录找不到 err 不 panic
 		panic(err)

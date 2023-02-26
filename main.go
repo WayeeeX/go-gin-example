@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/WayeeeX/go-gin-example/pkg/translator"
 	"github.com/gin-gonic/gin"
 	"log"
 
@@ -18,6 +19,7 @@ func init() {
 	logging.Setup()
 	gredis.Setup()
 	util.Setup()
+	translator.Setup()
 }
 
 // @title Golang Gin API

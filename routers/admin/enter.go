@@ -10,4 +10,5 @@ var (
 	songService     service.SongService
 	albumService    service.AlbumService
 	artistService   service.ArtistService
+	logLoginService service.LogLoginService
 )

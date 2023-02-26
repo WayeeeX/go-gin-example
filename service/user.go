@@ -23,7 +23,7 @@ func (u *UserService) AdminLogin(username string, password string, ip string) (r
 		return resLogin, e.ERROR_AUTH_PARAMS
 	}
 	//登录成功 生成登录记录
-	loginRecordModel.Create(models.LoginRecord{UserID: user.ID, LastLoginIP: ip})
+	loginRecordModel.Create(models.LoginRecord{UserID: user.ID, LoginIP: ip})
 	user.LastLoginIP = ip
 	userModel.Save(user)
 	//生成token
@@ -47,7 +47,7 @@ func (u *UserService) Login(username string, password string, ip string) (resLog
 		return resLogin, e.ERROR_AUTH_PARAMS
 	}
 	//登录成功 生成登录记录
-	loginRecordModel.Create(models.LoginRecord{UserID: user.ID, LastLoginIP: ip})
+	loginRecordModel.Create(models.LoginRecord{UserID: user.ID, LoginIP: ip})
 	user.LastLoginIP = ip
 	userModel.Save(user)
 	//生成token
@@ -87,7 +87,7 @@ func (u *UserService) CheckUserExistByNickname(nickname string) bool {
 	user := userModel.GetByNickname(nickname)
 	return user.ID != 0
 }
-func (u *UserService) GetUserDetailByID(userID uint) (user models.User) {
+func (u *UserService) GetUserDetailByID(userID uint64) (user models.User) {
 	return userModel.GetByID(userID)
 }
 func (u *UserService) GetUserList(req request.PageQuery) (users []models.User, total int) {

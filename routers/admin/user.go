@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"github.com/WayeeeX/go-gin-example/models"
 	"github.com/WayeeeX/go-gin-example/models/request"
 	"github.com/WayeeeX/go-gin-example/pkg/app"
 	"github.com/WayeeeX/go-gin-example/pkg/e"
@@ -64,9 +65,10 @@ func CheckExistNickname(c *gin.Context) {
 	appG.Response(e.SUCCESS, nil)
 }
 
-func GetUserDetail(c *gin.Context) {
-	appG := app.GetGin(c)
+func GetMyDetail(c *gin.Context) {
 	userID, _ := c.Get("userID")
-	user := userService.GetUserDetailByID(userID.(uint))
-	appG.Response(e.SUCCESS, user)
+	user := models.GetOne[models.User](models.User{}, "id = ?", userID)
+	util.Response(c, e.SUCCESS, gin.H{
+		"user": user,
+	})
 }

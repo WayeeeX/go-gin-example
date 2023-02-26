@@ -15,7 +15,6 @@ import (
 )
 
 var db *gorm.DB
-var DB = db
 
 // Setup initializes the database instance
 func Setup() {

@@ -14,3 +14,7 @@ func (s SongService) Create(req request.CreateSong) {
 func (s SongService) GetSongList(req request.PageQuery) (res response.SongList) {
 	return songModel.GetList(req)
 }
+
+func (s SongService) GetSongDetail(id uint64) (res response.Song) {
+	return songModel.GetDetail(id)
+}

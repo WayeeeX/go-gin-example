@@ -67,9 +67,9 @@ func (t *LocalTime) Scan(v interface{}) error {
 }
 
 type IdsJson struct {
-	Ids []int64 `json:"ids" binding:"required,min=1"`
+	Ids []uint64 `json:"ids" binding:"required,min=1"`
 }
 
 type IdQuery struct {
-	Id int64 `form:"id" binding:"required,number,min=1"`
+	Id uint64 `form:"id" binding:"required,number,min=1"`
 }

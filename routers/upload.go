@@ -91,3 +91,42 @@ func UploadLyric(c *gin.Context) {
 		"save_url": "/" + savePath + fileName,
 	})
 }
+
+func UploadMusic(c *gin.Context) {
+	file, fileInfo, err := c.Request.FormFile("music")
+
+	if err != nil {
+		util.FailMessage(c, err.Error())
+		return
+	}
+
+	if fileInfo == nil {
+		util.Response(c, e.INVALID_PARAMS, nil)
+		return
+	}
+	fileName := upload.GetFileName(fileInfo.Filename)
+	fullPath := upload.GetMusicFullPath()
+	savePath := upload.GetMusicPath()
+	src := fullPath + fileName
+
+	if !upload.CheckMusicExt(fileName) || !upload.CheckMusicSize(file) {
+		util.FailMessage(c, "校验失败,格式或大小有问题")
+		return
+	}
+
+	err = upload.CheckFile(fullPath)
+	if err != nil {
+		util.FailMessage(c, "检查文件失败")
+		return
+	}
+
+	if err := c.SaveUploadedFile(fileInfo, src); err != nil {
+		util.FailMessage(c, "保存文件失败")
+		return
+	}
+
+	util.Response(c, e.SUCCESS, map[string]string{
+		"url":      upload.GetMusicFullUrl(fileName),
+		"save_url": "/" + savePath + fileName,
+	})
+}
