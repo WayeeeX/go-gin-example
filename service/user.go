@@ -99,6 +99,10 @@ func (u *UserService) DeleteUsers(req request.IdsJson) (code int) {
 func (u *UserService) UpdateUserStatus(req request.UpdateStatus) (code int) {
 	return userModel.UpdateStatus(req)
 }
+func (u *UserService) UpdateUser(user models.User) (code int) {
+	userModel.Save(user)
+	return e.SUCCESS
+}
 
 // GetPwd 给密码加密
 func GetPwd(pwd string) ([]byte, error) {

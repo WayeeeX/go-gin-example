@@ -65,3 +65,34 @@ func (t *LocalTime) Scan(v interface{}) error {
 	}
 	return fmt.Errorf("can not convert %v to timestamp", v)
 }
+
+type LocalDate time.Time
+
+func (t LocalDate) MarshalJSON() ([]byte, error) {
+	return []byte(`"` + time.Time(t).Format("2006-01-02") + `"`), nil
+}
+func (t *LocalDate) UnmarshalJSON(data []byte) error {
+	// 如果日期字符串为空，那么直接将 LocalDate 类型设置为 nil
+	if string(data) == "null" {
+		*t = LocalDate{}
+		return nil
+	}
+
+	// 解析日期字符串
+	parsedTime, err := time.ParseInLocation(`"2006-01-02"`, string(data), time.Local)
+	if err != nil {
+		return err
+	}
+
+	// 只保留日期信息
+	parsedDate := time.Date(parsedTime.Year(), parsedTime.Month(), parsedTime.Day(), 0, 0, 0, 0, parsedTime.Location())
+
+	// 转换成 LocalDate 类型
+	*t = LocalDate(parsedDate)
+	return nil
+}
+
+// Value 实现 driver.Valuer 接口，用于将 LocalDate 类型转换为 MySQL 的 date 类型
+func (t LocalDate) Value() (driver.Value, error) {
+	return time.Time(t), nil
+}

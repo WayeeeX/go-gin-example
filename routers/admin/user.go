@@ -30,6 +30,12 @@ func DeleteUsers(c *gin.Context) {
 	appG.Response(userService.DeleteUsers(app.BindJson[request.IdsJson](c)), nil)
 	return
 }
+func UpdateUser(c *gin.Context) {
+	user := util.CopyProperties[models.User](app.BindJson[request.UpdateUserAdmin](c))
+	models.Updates[models.User](&user, "id = ?", user.ID)
+	util.OK(c)
+	return
+}
 func UpdateUserStatus(c *gin.Context) {
 	appG := app.GetGin(c)
 	appG.Response(userService.UpdateUserStatus(app.BindJson[request.UpdateStatus](c)), nil)
@@ -71,4 +77,10 @@ func GetMyDetail(c *gin.Context) {
 	util.Response(c, e.SUCCESS, gin.H{
 		"user": user,
 	})
+}
+func GetUserDetail(c *gin.Context) {
+	util.Response(c, e.SUCCESS, gin.H{
+		"user": userService.GetUserDetailByID(app.BindValidQuery[request.IdQuery](c).Id),
+	})
+	return
 }

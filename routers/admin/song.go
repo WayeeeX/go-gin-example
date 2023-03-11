@@ -38,6 +38,7 @@ func UpdateSong(c *gin.Context) {
 	song := util.CopyProperties[models.Song](app.BindJson[request.UpdateSong](c))
 	models.Updates[models.Song](&song, "id = ?", song.ID)
 	util.OK(c)
+	return
 }
 func UpdateSongStatus(c *gin.Context) {
 	json := app.BindJson[request.UpdateStatus](c)

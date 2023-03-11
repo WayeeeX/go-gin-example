@@ -16,7 +16,7 @@ type songListModel interface {
 }
 
 func (s SongList) Create(model SongList) SongList {
-	err := db.Create(&model).Error
+	err := DB.Create(&model).Error
 	if err != nil {
 		panic(err)
 	}

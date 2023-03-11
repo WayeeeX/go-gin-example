@@ -16,8 +16,10 @@ func InitAdminRouter(r *gin.Engine) *gin.Engine {
 
 	artist := admin.Group("/artist")
 	{
-		artist.GET("/list")
-		artist.POST("/update")
+		artist.GET("/list", v1.GetArtistList)
+		artist.GET("/detail", v1.GetArtistDetail)
+		artist.POST("/update", v1.UpdateArtist)
+		artist.POST("/create", v1.CreateArtist)
 		artist.POST("/delete")
 		artist.GET("/selectList", v1.GetArtistSelectList)
 	}
@@ -26,7 +28,9 @@ func InitAdminRouter(r *gin.Engine) *gin.Engine {
 	{
 		user.GET("/list", v1.GetUserList)
 		user.GET("/my/detail", v1.GetMyDetail)
+		user.GET("/detail", v1.GetUserDetail)
 		user.POST("/delete", v1.DeleteUsers)
+		user.POST("/update", v1.UpdateUser)
 		user.POST("/updateStatus", v1.UpdateUserStatus)
 	}
 

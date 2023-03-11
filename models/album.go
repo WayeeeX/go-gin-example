@@ -20,6 +20,6 @@ type Album struct {
 }
 
 func (a *Album) GetSelectList(req request.PageQuery) (res response.AlbumSelectList) {
-	db.Table("tb_album al").Select("al.id,al.name,al.pic,ar.name artist_name").Joins("left join tb_artist ar on al.artist_id = ar.id").Count(&res.Total).Where("al.name like ? or ar.name like ?", "%"+req.Keyword+"%", "%"+req.Keyword+"%").Limit(req.PageSize).Offset(util.GetOffset(req)).Scan(&res.Albums)
+	DB.Table("tb_album al").Select("al.id,al.name,al.pic,ar.name artist_name").Joins("left join tb_artist ar on al.artist_id = ar.id").Count(&res.Total).Where("al.name like ? or ar.name like ?", "%"+req.Keyword+"%", "%"+req.Keyword+"%").Limit(req.PageSize).Offset(util.GetOffset(req)).Scan(&res.Albums)
 	return
 }

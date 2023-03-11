@@ -24,7 +24,7 @@ type User struct {
 
 // GetUserByName 根据用户名查询用户
 func (u *User) GetByUsername(username string) (user User) {
-	err := db.Where("username = ?", username).First(&user).Error
+	err := DB.Where("username = ?", username).First(&user).Error
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) { // 记录找不到 err 不 panic
 		panic(err)
 	}
@@ -32,7 +32,7 @@ func (u *User) GetByUsername(username string) (user User) {
 }
 
 func (u *User) GetByNickname(nickname string) (user User) {
-	err := db.Where("nickname = ?", nickname).First(&user).Error
+	err := DB.Where("nickname = ?", nickname).First(&user).Error
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) { // 记录找不到 err 不 panic
 		panic(err)
 	}
@@ -40,41 +40,41 @@ func (u *User) GetByNickname(nickname string) (user User) {
 }
 
 func (u *User) GetByID(userID uint64) (user User) {
-	err := db.First(&user, userID).Error
+	err := DB.First(&user, userID).Error
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) { // 记录找不到 err 不 panic
 		panic(err)
 	}
 	return user
 }
 func (u *User) GetList(req request.PageQuery) (users []User, total int) {
-	db.Find(&users).Count(&total)
-	db.Limit(req.PageSize).Offset(util.GetOffset(req)).
+	keyword := "%" + req.Keyword + "%"
+	DB.Table("tb_user").Where("username like ? or nickname like ? or phone like ?", keyword, keyword, keyword).Count(&total).Limit(req.PageSize).Offset(util.GetOffset(req)).
 		Find(&users)
 	return users, total
 }
 func (u *User) Create(user User) User {
-	err := db.Create(&user).Error
+	err := DB.Create(&user).Error
 	if err != nil {
 		panic(err)
 	}
 	return user
 }
 func (u *User) Delete(req request.IdsJson) int {
-	err := db.Table("tb_user").Where("id IN (?)", req.Ids).Updates(map[string]interface{}{"status": -1}).Error
+	err := DB.Table("tb_user").Where("id IN (?)", req.Ids).Updates(map[string]interface{}{"status": -1}).Error
 	if err != nil {
 		panic(err)
 	}
 	return e.SUCCESS
 }
 func (u *User) UpdateStatus(req request.UpdateStatus) int {
-	err := db.Model(User{}).Where("id IN (?)", req.Ids).Updates(User{Status: req.Status}).Error
+	err := DB.Model(User{}).Where("id IN (?)", req.Ids).Updates(User{Status: req.Status}).Error
 	if err != nil {
 		panic(err)
 	}
 	return e.SUCCESS
 }
 func (u *User) Save(user User) bool {
-	err := db.Save(&user).Error
+	err := DB.Save(&user).Error
 	if err != nil {
 		panic(err)
 	}

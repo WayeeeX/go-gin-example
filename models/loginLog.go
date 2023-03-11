@@ -15,13 +15,13 @@ type LoginRecord struct {
 }
 
 func (l *LoginRecord) Create(loginRecord LoginRecord) LoginRecord {
-	err := db.Create(&loginRecord).Error
+	err := DB.Create(&loginRecord).Error
 	if err != nil {
 		panic(err)
 	}
 	return loginRecord
 }
 func (l *LoginRecord) GetList(req request.PageQuery) (res response.LogLoginList) {
-	db.Table("tb_login_record log").Select("log.*,u.id user_id,u.nickname user_name").Joins("left join tb_user u on u.id = log.user_id").Where("u.nickname like ? or log.login_ip like ?", "%"+req.Keyword+"%", "%"+req.Keyword+"%").Count(&res.Total).Limit(req.PageSize).Offset(util.GetOffset(req)).Scan(&res.Logs)
+	DB.Table("tb_login_record log").Select("log.*,u.id user_id,u.nickname user_name").Joins("left join tb_user u on u.id = log.user_id").Where("u.nickname like ? or log.login_ip like ?", "%"+req.Keyword+"%", "%"+req.Keyword+"%").Count(&res.Total).Limit(req.PageSize).Offset(util.GetOffset(req)).Scan(&res.Logs)
 	return
 }

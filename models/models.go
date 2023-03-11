@@ -14,12 +14,12 @@ import (
 	"time"
 )
 
-var db *gorm.DB
+var DB *gorm.DB
 
 // Setup initializes the database instance
 func Setup() {
 	var err error
-	db, err = gorm.Open(setting.DatabaseSetting.Type, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+	DB, err = gorm.Open(setting.DatabaseSetting.Type, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		setting.DatabaseSetting.User,
 		setting.DatabaseSetting.Password,
 		setting.DatabaseSetting.Host,
@@ -29,21 +29,22 @@ func Setup() {
 		log.Fatalf("models.Setup err: %v", err)
 	}
 
-	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
+	gorm.DefaultTableNameHandler = func(DB *gorm.DB, defaultTableName string) string {
 		return setting.DatabaseSetting.TablePrefix + defaultTableName
 	}
 
-	db.SingularTable(true)
-	db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
-	db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
-	db.Callback().Delete().Replace("gorm:delete", deleteCallback)
-	db.DB().SetMaxIdleConns(10)
-	db.DB().SetMaxOpenConns(100)
+	DB.LogMode(true)
+	DB.SingularTable(true)
+	DB.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
+	DB.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
+	DB.Callback().Delete().Replace("gorm:delete", deleteCallback)
+	DB.DB().SetMaxIdleConns(10)
+	DB.DB().SetMaxOpenConns(100)
 }
 
 // CloseDB closes database connection (unnecessary)
 func CloseDB() {
-	defer db.Close()
+	defer DB.Close()
 }
 
 // updateTimeStampForCreateCallback will set `CreatedOn`, `ModifiedOn` when creating
@@ -112,7 +113,7 @@ func addExtraSpaceIfExist(str string) string {
 // 通用 CRUD
 // 创建数据(可以创建[单条]数据, 也可[批量]创建)
 func Create[T any](data *T) {
-	err := db.Create(&data).Error
+	err := DB.Create(&data).Error
 	if err != nil {
 		panic(err)
 	}
@@ -120,7 +121,7 @@ func Create[T any](data *T) {
 
 // [单条]数据查询
 func GetOne[T any](data T, query string, args ...any) T {
-	err := db.Where(query, args...).First(&data).Error
+	err := DB.Where(query, args...).First(&data).Error
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) { // 记录找不到 err 不 panic
 		panic(err)
 	} else if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -133,10 +134,10 @@ func GetOne[T any](data T, query string, args ...any) T {
 // [单行]更新: 传入对应结构体[传递主键用] 和 带有对应更新字段值的[结构体]，结构体不更新零值
 func Update[T any](data *T, slt ...string) {
 	if len(slt) > 0 {
-		db.Model(&data).Select(slt).Updates(&data)
+		DB.Model(&data).Select(slt).Updates(&data)
 		return
 	}
-	err := db.Model(&data).Updates(&data).Error
+	err := DB.Model(&data).Updates(&data).Error
 	if err != nil {
 		panic(err)
 	}
@@ -144,7 +145,7 @@ func Update[T any](data *T, slt ...string) {
 
 // [批量]更新: map 的字段就是要更新的字段 (map 可以更新零值), 通过条件可以实现[单行]更新
 func UpdatesMap[T any](data *T, maps map[string]any, query string, args ...any) {
-	err := db.Model(&data).Where(query, args...).Updates(maps).Error
+	err := DB.Model(&data).Where(query, args...).Updates(maps).Error
 	if err != nil {
 		panic(err)
 	}
@@ -152,7 +153,7 @@ func UpdatesMap[T any](data *T, maps map[string]any, query string, args ...any) 
 
 // [批量]更新: 结构体的属性就是要更新的字段 (结构体不更新零值), 通过条件可以实现[单行]更新
 func Updates[T any](data *T, query string, args ...any) {
-	err := db.Model(&data).Where(query, args...).Updates(&data).Error
+	err := DB.Model(&data).Where(query, args...).Updates(&data).Error
 	if err != nil {
 		panic(err)
 	}
@@ -161,14 +162,14 @@ func Updates[T any](data *T, query string, args ...any) {
 // 数据列表
 func List[T any](data T, req request.PageQuery, query string, args ...any) (T, int64) {
 	var total int64
-	db.Model(&data).Count(&total).Where(query, args).Limit(req.PageSize).Offset(util.GetOffset(req)).
+	DB.Model(&data).Count(&total).Where(query, args).Limit(req.PageSize).Offset(util.GetOffset(req)).
 		Find(&data)
 	return data, total
 }
 
 // [批量]删除数据, 通过条件控制可以删除单条数据
 func Delete[T any](data T, query string, args ...any) {
-	err := db.Where(query, args...).Delete(&data).Error
+	err := DB.Where(query, args...).Delete(&data).Error
 	if err != nil {
 		panic(err)
 	}
@@ -177,11 +178,11 @@ func Delete[T any](data T, query string, args ...any) {
 // 统计数量
 func Count[T any](data T, query string, args ...any) int64 {
 	var total int64
-	db := db.Model(data)
+	DB := DB.Model(data)
 	if query != "" {
-		db = db.Where(query, args...)
+		DB = DB.Where(query, args...)
 	}
-	if err := db.Count(&total).Error; err != nil {
+	if err := DB.Count(&total).Error; err != nil {
 		panic(err)
 	}
 	return total

@@ -9,3 +9,7 @@ type CreateAlbum struct {
 	Status       *int   `json:"status" binding:"required,oneof=0 1"`
 	ReleaseTime  string `json:"release_time"`
 }
+type AlbumList struct {
+	PageQuery
+	ArtistID uint64 `form:"artist_id" binding:"number"`
+}
