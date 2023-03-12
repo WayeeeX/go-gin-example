@@ -4,7 +4,7 @@ import (
 	"github.com/WayeeeX/go-gin-example/models/common"
 )
 
-type SongList struct {
+type SngList struct {
 	Songs []songListSong `json:"songs"`
 	Total uint64         `json:"total"`
 }

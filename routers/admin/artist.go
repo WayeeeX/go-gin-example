@@ -8,7 +8,6 @@ import (
 	"github.com/WayeeeX/go-gin-example/pkg/e"
 	"github.com/WayeeeX/go-gin-example/pkg/util"
 	"github.com/gin-gonic/gin"
-	"time"
 )
 
 func GetArtistSelectList(c *gin.Context) {
@@ -20,7 +19,7 @@ func GetArtistList(c *gin.Context) {
 	req := app.BindValidQuery[request.ArtistList](c)
 	res := response.ArtistList{}
 	keyword := "%" + req.Keyword + "%"
-	models.DB.Table("tb_artist s").Where("category like ? or nationality like ? or name like ?", keyword, keyword, keyword).Count(&res.Total).Limit(req.PageSize).Offset(util.GetOffset(req.PageQuery)).Scan(&res.Artists)
+	models.DB.Table("tb_artist s").Where("category like ? or nationality like ? or name like ?", keyword, keyword, keyword).Count(&res.Total).Limit(req.PageSize).Offset(util.GetOffset(req.PageQuery)).Order("create_time desc").Scan(&res.Artists)
 	util.Response(c, e.SUCCESS, res)
 	return
 }
@@ -32,24 +31,12 @@ func GetArtistDetail(c *gin.Context) {
 	return
 }
 func UpdateArtist(c *gin.Context) {
-	artist := util.CopyProperties[models.Artist](app.BindJson[request.UpdateArtist](c))
-	// 将 Birthday 转换成 time.Time 类型
-	var birthdayStr string
-	if artist.Birthday != nil {
-		birthdayStr = time.Time(*artist.Birthday).Format("2006-01-02")
+	json := app.BindJson[request.UpdateArtist](c)
+	err := models.DB.Table("tb_artist").Where("id = ?", json.ID).Updates(json).Error
+	if err != nil {
+		panic(err)
 	}
-	// 构造要更新的数据
-	updatesMap := map[string]interface{}{
-		"category":     artist.Category,
-		"nationality":  artist.Nationality,
-		"name":         artist.Name,
-		"pic":          artist.Pic,
-		"introduction": artist.Introduction,
-		"birthday":     birthdayStr,
-	}
-	models.DB.Table("tb_artist").Where("id = ?", artist.ID).Updates(updatesMap)
 	util.OK(c)
-	return
 }
 
 func CreateArtist(c *gin.Context) {

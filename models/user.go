@@ -48,7 +48,7 @@ func (u *User) GetByID(userID uint64) (user User) {
 }
 func (u *User) GetList(req request.PageQuery) (users []User, total int) {
 	keyword := "%" + req.Keyword + "%"
-	DB.Table("tb_user").Where("username like ? or nickname like ? or phone like ?", keyword, keyword, keyword).Count(&total).Limit(req.PageSize).Offset(util.GetOffset(req)).
+	DB.Table("tb_user").Where("username like ? or nickname like ? or phone like ?", keyword, keyword, keyword).Count(&total).Limit(req.PageSize).Offset(util.GetOffset(req)).Order("create_time desc").
 		Find(&users)
 	return users, total
 }

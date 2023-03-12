@@ -17,9 +17,9 @@ type result struct {
 	ArtistPic  string
 }
 
-func GetSongList(c *gin.Context) {
+func GetSonglist(c *gin.Context) {
 	req := app.BindValidQuery[request.PageQuery](c)
-	util.Response(c, e.SUCCESS, songService.GetSongList(req))
+	util.Response(c, e.SUCCESS, songService.GetSonglist(req))
 	return
 }
 func CreateSong(c *gin.Context) {

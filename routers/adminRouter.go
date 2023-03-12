@@ -29,6 +29,7 @@ func InitAdminRouter(r *gin.Engine) *gin.Engine {
 		user.GET("/list", v1.GetUserList)
 		user.GET("/my/detail", v1.GetMyDetail)
 		user.GET("/detail", v1.GetUserDetail)
+		user.GET("/selectList", v1.GetUserSelectList)
 		user.POST("/delete", v1.DeleteUsers)
 		user.POST("/update", v1.UpdateUser)
 		user.POST("/updateStatus", v1.UpdateUserStatus)
@@ -36,7 +37,7 @@ func InitAdminRouter(r *gin.Engine) *gin.Engine {
 
 	song := admin.Group("/song")
 	{
-		song.GET("/list", v1.GetSongList)
+		song.GET("/list", v1.GetSonglist)
 		song.GET("/detail", v1.GetSongDetail)
 		song.POST("/create", v1.CreateSong)
 		song.POST("/update", v1.UpdateSong)
@@ -47,26 +48,28 @@ func InitAdminRouter(r *gin.Engine) *gin.Engine {
 	album := admin.Group("/album")
 	{
 		album.GET("/list", v1.GetAlbumList)
-		album.GET("/detail")
+		album.GET("/detail", v1.GetAlbumDetail)
 		album.POST("/create", v1.CreateAlbum)
-		album.POST("/update")
+		album.POST("/update", v1.UpdateAlbum)
 		album.POST("/updateStatus")
 		album.POST("/delete")
 		album.GET("/selectList", v1.GetAlbumSelectList)
 	}
 
-	songList := admin.Group("/songlist")
+	playlist := admin.Group("/playlist")
 	{
-		songList.GET("/list")
-		songList.GET("/detail")
-		songList.POST("/update")
-		songList.POST("/delete")
-		songListTag := songList.Group("/tag")
+		playlist.GET("/list", v1.GetPlaylistList)
+		playlist.GET("/detail", v1.GetPlaylistDetail)
+		playlist.POST("/update", v1.UpdatePlaylist)
+		playlist.POST("/create", v1.CreatePlaylist)
+		playlist.POST("/delete", v1.DeletePlaylist)
+		playlistCategory := playlist.Group("/category")
 		{
-			songListTag.GET("/list")
-			songListTag.GET("/detail")
-			songListTag.POST("/update")
-			songListTag.POST("/delete")
+			playlistCategory.GET("/list", v1.GetPlaylistCatList)
+			playlistCategory.GET("/detail")
+			playlistCategory.POST("/update", v1.UpdatePlaylistCat)
+			playlistCategory.POST("/create", v1.CreatePlaylistCat)
+			playlistCategory.POST("/delete", v1.DeletePlaylistCat)
 		}
 	}
 

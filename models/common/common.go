@@ -1,6 +1,7 @@
 package common
 
 import (
+	"database/sql"
 	"database/sql/driver"
 	"fmt"
 	"strconv"
@@ -66,15 +67,41 @@ func (t *LocalTime) Scan(v interface{}) error {
 	return fmt.Errorf("can not convert %v to timestamp", v)
 }
 
-type LocalDate time.Time
+type Date time.Time
 
-func (t LocalDate) MarshalJSON() ([]byte, error) {
-	return []byte(`"` + time.Time(t).Format("2006-01-02") + `"`), nil
+func (date *Date) Scan(value interface{}) (err error) {
+	nullTime := &sql.NullTime{}
+	err = nullTime.Scan(value)
+	*date = Date(nullTime.Time)
+	return
 }
-func (t *LocalDate) UnmarshalJSON(data []byte) error {
+
+func (date Date) Value() (driver.Value, error) {
+	y, m, d := time.Time(date).Date()
+	return time.Date(y, m, d, 0, 0, 0, 0, time.Time(date).Location()), nil
+}
+
+// GormDataType gorm common data type
+func (date Date) GormDataType() string {
+	return "date"
+}
+
+func (date Date) GobEncode() ([]byte, error) {
+	return time.Time(date).GobEncode()
+}
+
+func (date *Date) GobDecode(b []byte) error {
+	return (*time.Time)(date).GobDecode(b)
+}
+
+func (date Date) MarshalJSON() ([]byte, error) {
+	return []byte(`"` + time.Time(date).Format("2006-01-02") + `"`), nil
+}
+
+func (t *Date) UnmarshalJSON(data []byte) error {
 	// 如果日期字符串为空，那么直接将 LocalDate 类型设置为 nil
 	if string(data) == "null" {
-		*t = LocalDate{}
+		*t = Date{}
 		return nil
 	}
 
@@ -88,11 +115,6 @@ func (t *LocalDate) UnmarshalJSON(data []byte) error {
 	parsedDate := time.Date(parsedTime.Year(), parsedTime.Month(), parsedTime.Day(), 0, 0, 0, 0, parsedTime.Location())
 
 	// 转换成 LocalDate 类型
-	*t = LocalDate(parsedDate)
+	*t = Date(parsedDate)
 	return nil
-}
-
-// Value 实现 driver.Valuer 接口，用于将 LocalDate 类型转换为 MySQL 的 date 类型
-func (t LocalDate) Value() (driver.Value, error) {
-	return time.Time(t), nil
 }

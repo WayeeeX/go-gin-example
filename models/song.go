@@ -40,8 +40,8 @@ func (s Song) GetOne(song Song) Song {
 	//TODO implement me
 	panic("implement me")
 }
-func (s Song) GetList(req request.PageQuery) (res response.SongList) {
-	DB.Table("tb_song s").Select("s.*,al.name album_name,al.id album_id ,ar.name artist_name,ar.id artist_id").Joins("left join tb_album al on s.album_id = al.id left join tb_artist ar on al.artist_id = ar.id").Where("s.name like ? or ar.name like ? or al.name like ?", "%"+req.Keyword+"%", "%"+req.Keyword+"%", "%"+req.Keyword+"%").Count(&res.Total).Limit(req.PageSize).Offset(util.GetOffset(req)).Scan(&res.Songs)
+func (s Song) GetList(req request.PageQuery) (res response.SngList) {
+	DB.Table("tb_song s").Select("s.*,al.name album_name,al.id album_id ,ar.name artist_name,ar.id artist_id").Joins("left join tb_album al on s.album_id = al.id left join tb_artist ar on al.artist_id = ar.id").Where("s.name like ? or ar.name like ? or al.name like ?", "%"+req.Keyword+"%", "%"+req.Keyword+"%", "%"+req.Keyword+"%").Count(&res.Total).Limit(req.PageSize).Offset(util.GetOffset(req)).Order("create_time desc").Scan(&res.Songs)
 	return
 }
 func (s Song) GetDetail(id uint64) (res response.Song) {

@@ -19,10 +19,10 @@ type ArtistList struct {
 }
 type artist struct {
 	common.Model
-	Category     string            `json:"category"`
-	Nationality  string            `json:"nationality"`
-	Birthday     *common.LocalDate `json:"birthday"`
-	Name         string            `json:"name"`
-	Pic          string            `json:"pic"`
-	Introduction string            `json:"introduction"`
+	Category     string      `json:"category"`
+	Nationality  string      `json:"nationality"`
+	Birthday     common.Date `json:"birthday"`
+	Name         string      `json:"name"`
+	Pic          string      `json:"pic"`
+	Introduction string      `json:"introduction"`
 }

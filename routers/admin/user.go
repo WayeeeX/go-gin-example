@@ -3,6 +3,7 @@ package admin
 import (
 	"github.com/WayeeeX/go-gin-example/models"
 	"github.com/WayeeeX/go-gin-example/models/request"
+	"github.com/WayeeeX/go-gin-example/models/response"
 	"github.com/WayeeeX/go-gin-example/pkg/app"
 	"github.com/WayeeeX/go-gin-example/pkg/e"
 	"github.com/WayeeeX/go-gin-example/pkg/util"
@@ -81,6 +82,20 @@ func GetMyDetail(c *gin.Context) {
 func GetUserDetail(c *gin.Context) {
 	util.Response(c, e.SUCCESS, gin.H{
 		"user": userService.GetUserDetailByID(app.BindValidQuery[request.IdQuery](c).Id),
+	})
+	return
+}
+func GetUserSelectList(c *gin.Context) {
+	req := app.BindValidQuery[request.PageQuery](c)
+	var total uint64
+	var users []response.UserSelect
+	err := models.DB.Table("tb_user").Select("id,nickname,avatar").Where("nickname like ?", "%"+req.Keyword+"%").Count(&total).Limit(req.PageSize).Offset(util.GetOffset(req)).Scan(&users).Error
+	if err != nil {
+		panic(err)
+	}
+	util.Response(c, e.SUCCESS, gin.H{
+		"users": users,
+		"total": total,
 	})
 	return
 }

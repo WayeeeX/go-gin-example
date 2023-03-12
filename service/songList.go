@@ -5,10 +5,10 @@ import (
 	"github.com/WayeeeX/go-gin-example/pkg/e"
 )
 
-type SongListService struct {
+type PlaylistService struct {
 }
 
-func (s SongListService) CreateSongList(songList models.SongList) (models.SongList, int) {
+func (s PlaylistService) CreatePlaylist(songList models.Playlist) (models.Playlist, int) {
 
 	return songListModel.Create(songList), e.SUCCESS
 }

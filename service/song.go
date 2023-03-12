@@ -11,7 +11,7 @@ type SongService struct {
 func (s SongService) Create(req request.CreateSong) {
 	songModel.Create(req)
 }
-func (s SongService) GetSongList(req request.PageQuery) (res response.SongList) {
+func (s SongService) GetSonglist(req request.PageQuery) (res response.SngList) {
 	return songModel.GetList(req)
 }
 

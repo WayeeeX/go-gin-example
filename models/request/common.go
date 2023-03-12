@@ -73,3 +73,7 @@ type IdsJson struct {
 type IdQuery struct {
 	Id uint64 `form:"id" binding:"required,number,min=1"`
 }
+
+type IdPrimaryKey struct {
+	ID uint64 `json:"id" binding:"required,number,gt=0"`
+}

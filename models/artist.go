@@ -9,15 +9,15 @@ import (
 
 type Artist struct {
 	common.Model
-	Category     string            `json:"category"`
-	Nationality  string            `json:"nationality"`
-	Birthday     *common.LocalDate `json:"birthday" gorm:"default:nil",type:date`
-	Name         string            `json:"name"`
-	Pic          string            `json:"pic"`
-	Introduction string            `json:"introduction"`
+	Category     string      `json:"category"`
+	Nationality  string      `json:"nationality"`
+	Birthday     common.Date `json:"birthday" gorm:"default:nil",type:date`
+	Name         string      `json:"name"`
+	Pic          string      `json:"pic"`
+	Introduction string      `json:"introduction"`
 }
 
 func (a *Artist) GetSelectList(req request.PageQuery) (res response.ArtistSelectList) {
-	DB.Table("tb_artist ar").Select("ar.id,ar.name,ar.pic").Count(&res.Total).Where("ar.name like ?", "%"+req.Keyword+"%").Limit(req.PageSize).Offset(util.GetOffset(req)).Scan(&res.Artists)
+	DB.Table("tb_artist ar").Select("ar.id,ar.name,ar.pic").Where("ar.name like ?", "%"+req.Keyword+"%").Count(&res.Total).Limit(req.PageSize).Offset(util.GetOffset(req)).Scan(&res.Artists)
 	return
 }

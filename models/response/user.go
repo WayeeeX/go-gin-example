@@ -30,3 +30,9 @@ type Login struct {
 	User  UserInfo `json:"user"`
 	Token string   `json:"token"`
 }
+
+type UserSelect struct {
+	ID       uint64 `json:"id"`
+	Nickname string `json:"nickname"`
+	Avatar   string `json:"avatar"`
+}

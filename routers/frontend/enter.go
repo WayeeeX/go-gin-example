@@ -6,5 +6,5 @@ import (
 
 var (
 	userService     service.UserService
-	songListService service.SongListService
+	songListService service.PlaylistService
 )

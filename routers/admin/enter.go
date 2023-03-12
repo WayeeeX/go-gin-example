@@ -6,7 +6,7 @@ import (
 
 var (
 	userService     service.UserService
-	songListService service.SongListService
+	songListService service.PlaylistService
 	songService     service.SongService
 	albumService    service.AlbumService
 	artistService   service.ArtistService

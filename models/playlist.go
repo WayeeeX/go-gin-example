@@ -2,20 +2,20 @@ package models
 
 import "github.com/WayeeeX/go-gin-example/models/common"
 
-type SongList struct {
+type Playlist struct {
 	common.Model
 	UserID       uint   `json:"user_id"`
 	Name         string `json:"name"`
 	Pic          string `json:"pic"`
 	Introduction string `json:"introduction"`
 }
-type songListModel interface {
-	Create() SongList
-	Update() SongList
+type playlistModel interface {
+	Create() Playlist
+	Update() Playlist
 	Delete() bool
 }
 
-func (s SongList) Create(model SongList) SongList {
+func (s Playlist) Create(model Playlist) Playlist {
 	err := DB.Create(&model).Error
 	if err != nil {
 		panic(err)
@@ -23,12 +23,12 @@ func (s SongList) Create(model SongList) SongList {
 	return model
 }
 
-func (s SongList) Update() SongList {
+func (s Playlist) Update() Playlist {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (s SongList) Delete() bool {
+func (s Playlist) Delete() bool {
 	//TODO implement me
 	panic("implement me")
 }

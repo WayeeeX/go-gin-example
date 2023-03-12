@@ -9,14 +9,13 @@ import (
 
 type Album struct {
 	common.Model
-	ArtistID     uint64            `json:"artist_id"`
-	Name         string            `json:"name"`
-	Pic          string            `json:"pic"`
-	Introduction string            `json:"introduction"`
-	Genre        string            `json:"genre"`
-	Publisher    string            `json:"publisher"`
-	Status       *int              `json:"status"`
-	ReleaseTime  *common.LocalTime `json:"release_time"`
+	ArtistID     uint64      `json:"artist_id"`
+	Name         string      `json:"name"`
+	Pic          string      `json:"pic"`
+	Introduction string      `json:"introduction"`
+	Genre        string      `json:"genre"`
+	Publisher    string      `json:"publisher"`
+	ReleaseTime  common.Date `json:"release_time" gorm:"default:nil;type:date"`
 }
 
 func (a *Album) GetSelectList(req request.PageQuery) (res response.AlbumSelectList) {
